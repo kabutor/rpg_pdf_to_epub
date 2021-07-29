@@ -97,7 +97,7 @@ f = open(file_output,file_mode)
 # Title for PANDOC
 f.write ('% ' + file_input + '\n')
 f.write ('% ' + file_output+ '\n')
-
+doc_pages= 4
 for i in range(0,doc_pages):
     page = doc[i]
     texto = page.get_text("blocks")
