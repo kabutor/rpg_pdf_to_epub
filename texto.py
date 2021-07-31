@@ -1,10 +1,16 @@
 import fitz
-import io
+import io, os
 from collections import Counter
 import sys, getopt
 
 DEBUG = False 
-
+def get_images(page_num):
+    ret_image = []
+    for filename in os.listdir('./images/'):
+        dest = filename.split('_')
+        if (int(dest[1]) == page_num):
+            ret_image.append(os.path.join('images',filename))
+    return ret_image
 def count_adjust(blocks):
     """
     Count the number of ocurrences from the horizontal coordinate, pick the two most common
@@ -58,8 +64,8 @@ def sort_text(words):
     for w in block_sorted:  # fill the line dictionary
         if DEBUG:
             print ("Linea %i / %i : %s" % (w[0], w[1],w[4]) )
-        # remove (for now) the images and if len less than 2
-        if (not('<image' in w[4][0:20]) and (len(w[4]) > 2)):
+        # remove (for now) the images and if len less than 4 (page number)
+        if (not('<image' in w[4][0:20]) and (len(w[4]) > 4)):
             block_text+=(w[4]+'\n')
         
     return block_text 
@@ -90,6 +96,7 @@ except getrptrerror as err:
     # output error, and return with an error code
     print (str(err))
 
+
 doc = fitz.open(file_input)
 doc_pages = doc.page_count
 f = open(file_output,file_mode)
@@ -97,14 +104,16 @@ f = open(file_output,file_mode)
 # Title for PANDOC
 f.write ('% ' + file_input + '\n')
 f.write ('% ' + file_output+ '\n')
-
 for i in range(0,doc_pages):
     page = doc[i]
+    images_in_page = get_images(i)
+    for img in images_in_page:
+        f.write('![' + str(i) + '](' + img + ')')
+    #get block text adjust to two columns and format it
     texto = page.get_text("blocks")
     texto = count_adjust(texto)
     leer = sort_text(texto)
     f.write(leer)
-    ##input("next")
 
 f.close()
 
