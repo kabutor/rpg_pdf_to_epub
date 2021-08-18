@@ -41,17 +41,17 @@ def count_adjust(blocks):
         if (len(w[4]) > 5):
             # must be greater and different and between the margin
             if (int(w[0]) >= row_b):
-                if (int(w[0]) == row_b):
-                    tmp_list.append( (row_b, w[1],w[2],w[3], "\n" + w[4] + "\n",w[5],w[6]))
-                else:
-                    #seven values
-                    tmp_list.append( (row_b, w[1],w[2],w[3], "\n<i>" + w[4] + "</i>\n",w[5],w[6]))
+                #if (int(w[0]) == row_b):
+                tmp_list.append( (row_b, w[1],w[2],w[3], "\n" + w[4] + "\n",w[5],w[6]))
+                #else:
+                #    #seven values
+                #    tmp_list.append( (row_b, w[1],w[2],w[3], "\n<i>" + w[4] + "</i>\n",w[5],w[6]))
             elif(int(w[0]) >= row_a):
-                if (int(w[0]) == row_a):
-                    tmp_list.append( (row_a, w[1],w[2],w[3], "\n" + w[4] + "\n",w[5],w[6]))
-                else:
+                #if (int(w[0]) == row_a):
+                tmp_list.append( (row_a, w[1],w[2],w[3], "\n" + w[4] + "\n",w[5],w[6]))
+                #else:
                     #seven values
-                    tmp_list.append( (row_a, w[1],w[2],w[3], "\n<i>" + w[4] + "</i>\n",w[5],w[6]))
+                #    tmp_list.append( (row_a, w[1],w[2],w[3], "\n<i>" + w[4] + "</i>\n",w[5],w[6]))
             else:
                 tmp_list.append(w)
     return tmp_list
@@ -74,10 +74,10 @@ def sort_text(words):
 
 def clean_text(text_block):
     # Dots to newlines
-    text_block = text_block.replace('...','temp_k')
+    #text_block = text_block.replace('...','temp_k')
     text_block = text_block.replace('. .','temp_k')
     text_block = text_block.replace('.  .','temp_k')
-    text_block = text_block.replace('.','.\n')
+    text_block = text_block.replace('. ','.\n')
     text_block = text_block.replace('temp_k','...')
     # remove split word
     text_block = text_block.replace('-\n','')
@@ -121,7 +121,7 @@ for i in range(0,doc_pages):
     page = doc[i]
     images_in_page = get_images(i)
     for img in images_in_page:
-        f.write('![' + str(i) + '](' + img + ')\n')
+        f.write('![' + str(i) + '](' + img + ')\n\n')
     #get block text adjust to two columns and format it
     texto = page.get_text("blocks")
     try:
